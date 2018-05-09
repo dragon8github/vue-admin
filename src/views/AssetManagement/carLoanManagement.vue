@@ -107,8 +107,8 @@
              </el-pagination>
         </div>
 
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-          <iframe src="http://www.baidu.com" frameborder="0"></iframe>
+        <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width='50%'>
+          <iframe src="http://www.baidu.com" frameborder="0" class="honte-iframe"></iframe>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>

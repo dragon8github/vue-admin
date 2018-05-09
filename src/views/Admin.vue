@@ -72,7 +72,7 @@ export default {
     height: 100vh;
 
     .logo {
-        background-color: #357ca5;
+        background-color: #17B3A3;
         text-align: center;
         font-size: 18px;
         color: #ffffff;
@@ -82,10 +82,10 @@ export default {
     }
 
     .el-header {
-        background-color: #3c8dbc;
-        color: #fff;
+        background-color: #fff;
         text-align: center;
         line-height: 50px;
+        box-shadow: 0 2px 4px rgba(0,0,0,.08);
     }
 
     .el-aside {

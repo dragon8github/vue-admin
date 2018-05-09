@@ -33,5 +33,6 @@
     display: inline-block;
     margin: 0 10px;
     cursor: pointer;
+    color: #606266;
   }
 </style>
