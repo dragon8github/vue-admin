@@ -25,6 +25,7 @@
 <style>
   .layout-main-header{
     text-align: right;
+    color:#fff;
     font-size:16px;
   }
 

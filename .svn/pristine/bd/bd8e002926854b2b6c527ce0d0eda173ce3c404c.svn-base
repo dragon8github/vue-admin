@@ -82,7 +82,7 @@ export default {
     }
 
     .el-header {
-        background-color: #fdfdfd;
+        background-color: #fff;
         text-align: center;
         line-height: 50px;
         box-shadow: 0 2px 4px rgba(0,0,0,.08);
