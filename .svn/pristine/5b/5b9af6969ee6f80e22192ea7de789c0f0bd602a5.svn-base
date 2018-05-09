@@ -32,7 +32,6 @@
             <el-header :height="'50px'"><v-header></v-header></el-header>
             <!-- 主体 -->
             <el-main>
-                <!-- 内容页 -->
                 <page-tags></page-tags>
             </el-main>
         </el-container>
