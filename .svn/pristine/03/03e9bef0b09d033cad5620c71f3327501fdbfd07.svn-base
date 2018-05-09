@@ -1,0 +1,116 @@
+
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+//父页面
+const Main = () => import('@/views/Main')
+
+//没有菜单的路由
+export const loginRouter = {
+  path: '/',
+  name: 'login',
+  meta: {
+      title: 'Login - 登录'
+  },
+  component: () => import('@/views/Login')
+}
+
+//出错路由
+//403
+export const page403 = {
+  path: '/403',
+  meta: {
+      title: '403-权限不足'
+  },
+  name: 'error-403',
+  component: () => import('@/views/error-page/403.vue')
+}
+//500
+export const page500 = {
+  path: '/500',
+  meta: {
+      title: '500-服务端错误'
+  },
+  name: 'error-500',
+  component: () => import('@/views/error-page/500.vue')
+}
+//404
+export const page404 = {
+  path: '/*',
+  name: 'error-404',
+  meta: {
+      title: '404-页面不存在'
+  },
+  component: () => import('@/views/error-page/404.vue')
+}
+
+//子页面
+const appRoutes = [
+  {
+    path: '/home',
+    component: Main,
+    children: [
+        { 
+          path: 'loan_manage', 
+          title: '贷后管理', 
+          name: 'loan_manage', 
+          component: () => import('@/views/loan/Index') 
+        },
+        { 
+          path: 'assets_manage', 
+          title: '资产管理', 
+          name: 'assets_manage', 
+          component: () => import('@/views/assets/Index') 
+        },
+        { 
+          path: 'advt_manage',
+          title: '广告模块', 
+          name: 'advt_manage', 
+          component: () => import('@/views/message/Index') 
+        },
+        { 
+          path: 'new_manage',
+          title: '新闻模块', 
+          name: 'new_manage', 
+          component: () => import('@/views/new/Index') 
+        },
+        { 
+          path: 'system_manage',
+          title: '系统管理', 
+          name: 'system_manage', 
+          component: () => import('@/views/system/Index') 
+        },
+    ]
+  }
+]
+
+const routes = [
+  loginRouter,
+  ...appRoutes,
+  page404,
+  page403,
+  page500,
+]
+
+const router = new Router({
+  routes
+})
+
+//全局路由钩子进入之前逻辑处理 
+// router.beforeEach((to, from, next) => {
+
+
+// })
+
+//全局路由钩子进入后处理逻辑
+router.afterEach((to) => {
+  //Util.openNewPage(router.app, to.name, to.params, to.query);
+  //采用如下方式提交mutation,整个对象都作为载荷传给 mutation 函数，即在对应的方法中拿到的参数是经过封装的对象params.type,params.param
+  // router.app.$store.commit({
+  //   type:'OPEN_NEW_PAGE',
+  //   currentPathObj:to
+  // })
+});
+export default router

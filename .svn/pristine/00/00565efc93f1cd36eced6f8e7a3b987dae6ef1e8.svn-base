@@ -1,0 +1,6 @@
+@import "./reset";
+
+//全局替换放到这边
+.body{
+    padding: 50px;
+}

@@ -1,0 +1,37 @@
+<template>
+    <el-menu 
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#2d8cf0" 
+      router 
+      unique-opened 
+      :collapse="isCollapse"  
+      :default-active="onRoutes"
+      class="el-menu-vertical-demo"
+      >
+        <nav-item v-for="(item, index) in navList" :item="item" :navIndex="String(index)" :key="index">
+        </nav-item>
+    </el-menu>
+</template>
+
+<style>
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+        width: 200px;
+    }
+</style>
+
+<script>
+    import NavItem from './NavItem'
+    export default {
+        components:{
+            NavItem
+        },
+        props:['navList','isCollapse'],
+        computed: {
+            // 首次进入页面时展开当前页面所属的菜单
+            onRoutes(){
+                return this.$route.name
+            }
+        },
+    }
+</script>

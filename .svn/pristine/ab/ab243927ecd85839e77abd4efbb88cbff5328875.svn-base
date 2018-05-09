@@ -1,0 +1,87 @@
+<template>
+    <el-container>
+        <el-aside :width="asideWidth" :class="{collapsed:isCollapse}">
+            <div class="logo-icon">
+                LOGO
+            </div>
+            <div class="nav-toggle"><i class="fa fa-navicon" @click="toggleNav"></i></div>
+            <nav-bar :navList="menuList" :isCollapse="isCollapse"></nav-bar>
+        </el-aside>
+        <el-container>
+            <el-header><v-header></v-header></el-header>
+            <el-main><router-view /></el-main>
+            <el-footer><v-footer></v-footer></el-footer>
+        </el-container>
+    </el-container>
+</template>
+
+<style lang="scss" scoped>
+    .logo-icon {
+        line-height: 59px;
+        color: #2d8cf0;
+        font-size: 18px;
+        margin-bottom: 1px;
+    }
+    .el-header, .el-footer {
+        background-color: #495060;
+        color: #fff;
+        text-align: center;
+        line-height: 60px;
+    }
+    .el-menu{
+        border:none;
+    } 
+    .el-aside {
+        height: 100vh;
+        background-color: #495060;
+        transition:width 0.3s;
+    }
+    .nav-toggle{
+        margin:10px 0;
+        text-align: center;
+        i{
+            font-size: 28px;
+            color:#fff;
+        }
+    }
+   
+    
+    
+</style>
+
+<script>
+import vHeader from '@/views/main-component/Header'
+import vFooter from '@/views/main-component/Footer'
+import NavBar from '@/views/main-component/NavBar'
+import { mapGetters } from 'vuex'
+
+export default {
+    components:{
+        vHeader,
+        vFooter,
+        NavBar
+    },
+    computed:{
+        ...mapGetters({
+            menuList:'menuList'
+        }),
+        asideWidth () {
+            if(this.isCollapse){
+                return '64px'
+            }else{
+                return '200px'
+            }
+        }
+    },
+    data () {
+        return {
+            isCollapse:false
+        }
+    },
+    methods:{
+        toggleNav () {
+            this.isCollapse = !this.isCollapse
+        }
+    }
+}
+</script>

@@ -1,0 +1,46 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+const router = new Router({
+  routes: [
+    // 默认页面
+    {path: '/', redirect: window.goUrl || '/login'},
+    // 登录
+    {path: '/login', name: 'login',     meta: {title: '登录'},  component: () => import('@/views/Login')},
+    // 后台管理系统
+    {path: '/home', component: () => import('@/views/Main'), children: [
+        // 404
+        {path: '404',   name: 'error-404', meta: {title: '404-页面不存在'}, component: () => import('@/views/error-page/404.vue')},
+        // 403
+        {path: '403',   name: 'error-403', meta: {title: '403-权限不足'},   component: () => import('@/views/error-page/403.vue')},
+        // 500
+        {path: '500',   name: 'error-500', meta: {title: '500-服务端错误'}, component: () => import('@/views/error-page/500.vue')},
+         // 欢迎页
+        {path: 'welcome',   title: '欢迎页', name: 'welcome',   component: () => import('@/views/welcome/Index')},
+        // 贷后管理
+        {path: 'loan_manage',   meta: {title: '贷后管理'}, name: 'loan_manage',   component: () => import('@/views/loan/Index')},
+        // 资产管理
+        {path: 'assets_manage', meta: {title: '资产管理'}, name: 'assets_manage', component: () => import('@/views/assets/Index')},
+        // 广告模块
+        {path: 'advt_manage',   meta: {title: '广告模块'}, name: 'advt_manage',   component: () => import('@/views/message/Index')},
+        // 新闻模块
+        {path: 'new_manage',    meta: {title: '新闻模块'}, name: 'new_manage',    component: () => import('@/views/new/Index')},
+        // 系统管理
+        {path: 'system_manage', meta: {title: '系统管理'}, name: 'system_manage', component: () => import('@/views/system/Index')},
+    ]}
+  ]
+})
+
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+    next()
+})
+
+// 全局后置钩子
+router.afterEach((to, from) => {
+
+})
+
+export default router

@@ -1,0 +1,61 @@
+@import "./reset";
+
+/**
+ * 解决谷歌浏览器中的input背景色默认是黄色
+ */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+/**
+ * 虽然耗费性能，但性价比高
+ */
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+
+/**
+ * emmmmm... 我觉得这个颜色不会太刺眼
+ */
+body {
+  background-color: #ecf0f5;
+}
+
+/**
+ * is 系列类
+ */
+.is-circle {
+  border-radius: 50%;
+}
+
+.is-left {
+  float: left;
+}
+
+.is-clear::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/**
+ * 滚动条修饰
+ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background-color: #e2e2e2;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background-color: #e2e2e2;
+}

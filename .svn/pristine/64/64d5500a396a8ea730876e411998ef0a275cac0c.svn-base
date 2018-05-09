@@ -1,0 +1,37 @@
+@import "./reset";
+
+/**
+ * 解决谷歌浏览器中的input背景色默认是黄色
+ */
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px white inset !important; }
+
+/**
+ * 虽然耗费性能，但性价比高
+ */
+*, :before, :after {
+    box-sizing: border-box;
+}
+
+/**
+ * emmmmm... 我觉得这个颜色不会太刺眼
+ */
+body {
+    background-color: #ECF0F5;
+}
+
+/**
+ * is 系列类
+ */
+.is-circle {
+    border-radius: 50%;
+}
+
+.is-left {
+    float: left;
+}
+
+.is-clear::after {
+    content: '';
+    display: table;
+    clear:both;
+}
