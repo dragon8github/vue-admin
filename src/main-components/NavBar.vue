@@ -41,6 +41,9 @@
   }
 
   .el-menu-item.is-active {
+      /**
+       * 样式是style，所以为了覆盖只能使用!important
+       */
       background-color: #3a404b !important;
       border-left: 3px solid #3c8dbc
   }
