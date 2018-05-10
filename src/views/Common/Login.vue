@@ -2,7 +2,7 @@
     <div class="login-wrap">
         <div class="login-con">
             <p slot="title" class="title">欢迎登录</p>
-            <div class="form-con">
+            <div class="form-con" @keyup.enter="handleSubmit">
                 <el-form ref="loginForm" :model="loginForm" :rules="loginFormRule">
                     <el-form-item prop="username">
                         <el-input type="text" placeholder="请输入用户名" suffix-icon="el-icon-date" v-model="loginForm.username"></el-input>
@@ -13,7 +13,7 @@
                     </el-form-item>
 
                     <el-form-item>
-                        <el-button type="primary" @click="handleSubmit('loginForm')">登录</el-button>
+                        <el-button type="primary" @click="handleSubmit">登录</el-button>
                     </el-form-item>
                 </el-form>
                 <p class="login-tip">输入任意用户名和密码即可</p>
@@ -24,8 +24,8 @@
 
 
 <script>
-import { ajaxPost } from '../../fetch/api'
 import { mapMutations } from 'vuex'
+
 var data = {
     user:{
         avtar: 'https: //www.baidu.com/img/bd_logo1.png',
@@ -59,21 +59,26 @@ export default {
         }
     },
     methods: {
-        ...mapMutations({
-            setMenu: 'SET_MENU',
-            setUserInfo: 'SET_USERINFO'
-        }),
-        handleSubmit (name) {
-            this.$refs[name].validate(valid => {
+        ...mapMutations([
+            'SET_MENU',
+            'SET_USERINFO'
+        ]),
+        handleSubmit () {
+            this.$refs['loginForm'].validate(valid => {
                 if (valid) {
-                    this.$message.success('Success!')
-                    this.setMenu(data.routes)
-                    this.setUserInfo(data.user)
-                    this.$router.push({name: "welcome"})
-                    // ajaxPost.Login('/login',that.loginForm).then(res => {
-                    //     console.log('res',res)
-                    // })
+                    this.SET_MENU(data.routes)
+                    this.SET_USERINFO(data.user)
 
+                    this.$http.post('/uaa/auth/login', {
+                        "userName": this.loginForm.username,
+                        "password": this.loginForm.password
+                    }).then(result => {
+                        // console.log(result);
+                        // this.$message.success('Success!')
+                        // this.$router.push({name: "welcome"})
+                    }).catch(err => {
+                        this.$message.error('接口异常：' + err.message);
+                    })
                 } else {
                     this.$message.error('Fail!');
                 }

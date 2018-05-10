@@ -1,0 +1,43 @@
+import axios from 'axios'
+import { Loading, Message } from 'element-ui'
+const UAT = 'http://172.16.200.112:30111/'
+const SIT = 'http://172.16.200.112:30111/'
+const PRO = 'http://172.16.200.112:30111/'
+
+/**
+ * 公共配置
+ */
+const http = axios.create({
+  timeout: 1000 * 10,
+  baseURL: process.env.NODE_ENV === 'production' ? UAT : SIT,
+  headers: {
+    'app': 'ALMS',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json; charset=utf-8',
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVc2VyIEF1dGhvcml6ZSIsInVzZXJJZCI6IjAxMTExMzAwMDAiLCJvcmdDb2RlIjoiRDAxIiwiaXNzIjoicWl1d2Vud3VAaG9uZ3RlLmluZm8iLCJpYXQiOjE1MjU5NDI1ODQsImV4cCI6MTUyNTk0NDMyNCwiYXVkIjoi6LS35ZCO57O757uf566h55CG5ZGYIn0.LUMrwSPRIpJdXUXyH8OxOD1JGtAdxfjD879rJ7Pxqk4A1f09wpyqcLF_zi_kwktEmoGYjB-cNZjtCHh_kxD9Vw'
+  }
+})
+
+/**
+ * 请求拦截
+ */
+http.interceptors.request.use(request => { 
+  return request
+}, err => {
+  return Promise.reject(err)
+})
+
+/**
+ * 响应拦截
+ * 新认知：当使用console.log(err) 打印的时候，默认只打印出err.message（string），而不能打印出其他细节和属性，但我明明知道有其他属性存在的。
+ * 辗转一番搜索，发现直接使用console.table(err); 打印的话，不仅可以打印出详情。
+ */
+http.interceptors.response.use(response => {
+  return response.data
+}, err => {
+  console.table(err); 
+  // console.table(err);
+  return Promise.reject(err)
+})
+
+export default http

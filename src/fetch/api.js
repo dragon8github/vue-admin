@@ -6,19 +6,14 @@ import is from 'is-js'
 import { Loading, Message } from 'element-ui'
 
 // axios 全局配置
-// axios.defaults.withCredentials = true // 设置cookies
+axios.defaults.withCredentials = true // 设置cookies
 axios.defaults.timeout = 40000; // 请求超时
 axios.defaults.baseURL = 'http:// localhost:8081/' // 请求URI
 
 // 请求拦截
 axios.interceptors.request.use((config) => {
     // 获取到请求传参,可针对不同的请求拦截操作或者增加全局的加载效果
-    const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-    })
+    const loading = this.$loading({lock: true, text: 'Loading', spinner: 'el-icon-loading', background: 'rgba(0, 0, 0, 0.7)'})
     return config;
 },(error) =>{
     loading.close()

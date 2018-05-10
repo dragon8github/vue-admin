@@ -1,20 +1,21 @@
 import * as types from '../type'
-import * as Utils from '../../utils/jsutil'
+import * as utils from '../../utils/jsutil'
 
 const user = {
-    state:{
-        userInfo:{},
+    state: {
+        userInfo: {},
     },
-    getters:{
+    getters: {
         userInfo: state =>  state.userInfo
     },
-    mutations:{
+    mutations: {
+        // 设置用户信息
         [types.SET_USERINFO] ( state , userInfo ) {
-            Utils.setLocalStorage('userInfo',userInfo)
-            state.userInfo = Utils.getLocalStorage('userInfo')
+            utils.setLocalStorage('userInfo',userInfo)
+            state.userInfo = utils.getLocalStorage('userInfo')
         }
     },
-    actions:{
+    actions: {
 
     }
 }

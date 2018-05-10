@@ -63,6 +63,13 @@ export default {
         vFooter,
         NavBar,
         PageTags
+    },
+    beforeMount () {
+        this.$http.get('/uc/auth/loadMenu').then(result => {
+            console.log(result);
+        }).catch(err => {
+            this.$message.error('接口异常：' + err.message);
+        })
     }
 }
 </script>
