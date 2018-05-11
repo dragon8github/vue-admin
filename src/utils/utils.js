@@ -1,7 +1,7 @@
 import is from 'is-js'
 
 // 设置本地址存储
-export const setLocalStorage = (name,value) => {
+export const setLocalStorage = (name, value) => {
     if (!name || !value) {
         console.log('params is invalid!')
     }

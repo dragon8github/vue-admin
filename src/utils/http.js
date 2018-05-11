@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from '../router'
 import axios from 'axios'
 import { Loading, Message } from 'element-ui'
 
@@ -28,6 +29,15 @@ const http = axios.create({
  * 请求拦截
  */
 http.interceptors.request.use(request => {
+  // 每次请求，我都去刷新一下cookie（稍后封装一下）
+  if (Vue.cookie.get('refreshToken') && request.url.indexOf('/uaa/auth/login') < 0) { 
+      Vue.cookie.set('token', Vue.cookie.get('token'), { expires: '28m' });
+      Vue.cookie.set('refreshToken', Vue.cookie.get('refreshToken'), { expires: '30m' });
+  } else {
+      this.$message.error('登录超时，请重新登录。');
+      return router.push('/login')
+  }
+
   /**
    * 请不要尝试将此 request.headers['Authorization'] 的header设置移动到上面的【axios.create】公共配置中去。因为这会导致 Vue.cookie 不存在的错误。
    * 原因是在 main.js 中 import 总是提前执行（无论 import 放在什么位置），也就是说 【import http from './utils/http.js'】 总是比 【Vue.use(VueCookie)】执行的快。

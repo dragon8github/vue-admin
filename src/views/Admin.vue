@@ -89,6 +89,16 @@ export default {
         PageTags
     },
     beforeMount () {
+        // 每次进入后台，我都判断一下token是否存在，如果存在的话刷新token，否则跳转到登录页（稍后封装一下）
+        if (this.$cookie.get('refreshToken')) {
+            this.$cookie.set('token',  this.$cookie.get('token'), { expires: '28m' });
+            this.$cookie.set('refreshToken', this.$cookie.get('refreshToken'), { expires: '30m' });            
+        } else {
+            this.$message.error('登录超时，请重新登录。');
+            return this.$router.push('/login')
+        }
+
+        // 获取菜单列表
         this.$http.get('/uc/auth/loadMenu').then(result => {
             this.SET_MENU(mock.routes)
             this.SET_USERINFO(mock.user)
