@@ -75,14 +75,14 @@
                             size='mini'
                             type='success'>详情</el-button>
                          <el-dropdown-menu slot='dropdown'>
-                            <el-dropdown-item command='a'>发起拍卖</el-dropdown-item>
-                            <el-dropdown-item command='b'>转公车申请</el-dropdown-item>
-                            <el-dropdown-item command='c'>拍卖记录查看</el-dropdown-item>
-                            <el-dropdown-item command='d'>车辆归还登记</el-dropdown-item>
-                            <el-dropdown-item command='e'>重新评估</el-dropdown-item>
-                            <el-dropdown-item command='f'>附件上传及查看</el-dropdown-item>
-                            <el-dropdown-item command='g'>查看信贷附件</el-dropdown-item>
-                            <el-dropdown-item command='h'>拍卖延时</el-dropdown-item>
+                            <el-dropdown-item command='发起拍卖'> 发起拍卖 </el-dropdown-item>
+                            <el-dropdown-item command='转公车申请'> 转公车申请 </el-dropdown-item>
+                            <el-dropdown-item command='拍卖记录查看'> 拍卖记录查看 </el-dropdown-item>
+                            <el-dropdown-item command='车辆归还登记'> 车辆归还登记 </el-dropdown-item>
+                            <el-dropdown-item command='重新评估'> 重新评估 </el-dropdown-item>
+                            <el-dropdown-item command='附件上传及查看'> 附件上传及查看 </el-dropdown-item>
+                            <el-dropdown-item command='查看信贷附件'> 查看信贷附件 </el-dropdown-item>
+                            <el-dropdown-item command='拍卖延时'> 拍卖延时 </el-dropdown-item>
                          </el-dropdown-menu>
                     </el-dropdown> 
                     <el-button
@@ -106,12 +106,8 @@
              </el-pagination>
         </div>
 
-        <el-dialog title='收货地址' :visible.sync='dialogFormVisible' width='50%'>
-          <iframe src='http://www.baidu.com' frameborder='0' class='honte-iframe'></iframe>
-          <div slot='footer' class='dialog-footer'>
-            <el-button @click='dialogFormVisible = false'>取 消</el-button>
-            <el-button type='primary' @click='dialogFormVisible = false'>确 定</el-button>
-          </div>
+        <el-dialog class="hongte-dialog" :visible.sync='dialogFormVisible' title='发起拍卖' >
+            <iframe class='honte-iframe' src='/#/auctionApplication'></iframe>
         </el-dialog>
     </div>
 </template>
@@ -123,18 +119,16 @@ export default {
   name: 'CarLoanManagement',
   data () {
     return {
-        // loading
-        loading: true,
-        // dialog
-        dialogFormVisible: false,
         // 数据列表
         myData: [],
+        // loading
+        loading: true,
         // 当前分页
         currentPage: 1,
         // 分页总数
         total: 0,
-        // 拖车日期
-        trailerDate: '',
+        // dialog
+        dialogFormVisible: false,
         // 时间选择器
         pickerOptions: {
             shortcuts
@@ -151,46 +145,54 @@ export default {
     }
   },
   methods: {
-    // 重置查询条件
-    resetWhere () {
-        this.where = {
-            businessId: '',
-            customerName: '',
-            licensePlateNumber: '',
-            model: '',
-            trailerStartDate: '',
-            status: '',
-        }
-    },
-    // 获取数据
-    getData (page = 1) {
-        this.loading = true
-        this.$http.get('/alms/core/car/carList', {
-            params: Object.assign({}, {
-              'page': page,
-              'limit': '10'
-            }, this.where)
-        }).then(result => {
-            this.loading = false
-            if (result.code == 0) {
-              this.myData = result.data
-              this.total = result.count
-            } else {
-              this.$message.error('接口异常：' + result.msg);
-            }
-        }).catch(err => {
-            this.$message.error('接口异常：' + err.message);
-        })
-    },
-    // 翻页
-    handleCurrentChange (page) {
-        this.getData(page)
-    },
-    // dropdown
-    handleCommand () {
-        console.log(arguments);
-        this.dialogFormVisible = true
-    }
+      // 重置查询条件
+      resetWhere () {
+          this.where = {
+              businessId: '',
+              customerName: '',
+              licensePlateNumber: '',
+              model: '',
+              trailerStartDate: '',
+              status: '',
+          }
+      },
+      // 获取数据
+      getData (page = 1) {
+          this.loading = true
+          this.$http.get('/alms/core/car/carList', {
+              params: Object.assign({}, {
+                'page': page,
+                'limit': '10'
+              }, this.where)
+          }).then(result => {
+              this.loading = false
+              if (result.code == 0) {
+                this.total = result.count
+                this.myData = result.data
+              } else {
+                this.$message.error('接口异常：' + result.msg);
+              }
+          }).catch(err => {
+              this.$message.error('接口异常：' + err.message);
+          })
+      },
+      // 翻页
+      handleCurrentChange (page) {
+          this.getData(page)
+      },
+      // dropdown
+      handleCommand () {
+          console.log(arguments);
+          this.dialogFormVisible = true
+      },
+      // 编辑行
+      handleEdit () {
+
+      },
+      // 删除行
+      handleDelete () {
+
+      },
   },
   beforeMount () {
       this.getData(1)
@@ -199,6 +201,25 @@ export default {
 </script>
 
 <style lang='scss'>
+.hongte-dialog {
+    .el-dialog {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 75%;
+      height: 90%;
+      margin-top: 0 !important;
+    }
 
+    .el-dialog__body {
+      height: 95%;
+      padding: 0;
+    }
 
+    .honte-iframe {
+      height: 100%;
+      width: 100%;
+    }
+}
 </style>

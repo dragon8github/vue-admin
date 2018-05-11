@@ -25,7 +25,8 @@ const router = new Router({
         {path: '500', name: 'error-500', meta: {title: '500-服务端错误'}, component: () => import('@/views/Common/500.vue')},
         // 车易贷管理
         {path: 'carLoanManagement', meta: {title: '车易贷管理'}, name: 'carLoanManagement',component: () => import('@/views/AssetManagement/carLoanManagement')},
-    ]}
+    ]},
+    {path: '/auctionApplication', name: 'auctionApplication', meta: {title: '拍卖申请'}, component: () => import('@/views/AssetManagement/auctionApplication')},
   ]
 })
 
