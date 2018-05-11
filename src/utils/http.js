@@ -15,7 +15,7 @@ const http = axios.create({
     'app': 'ALMS',
     'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/json; charset=utf-8',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVc2VyIEF1dGhvcml6ZSIsInVzZXJJZCI6IjAxMTExMzAwMDAiLCJvcmdDb2RlIjoiRDAxIiwiaXNzIjoicWl1d2Vud3VAaG9uZ3RlLmluZm8iLCJpYXQiOjE1MjYwMDM3MzYsImV4cCI6MTUyNjAwNTQ3NiwiYXVkIjoi6LS35ZCO57O757uf566h55CG5ZGYIn0.RxiIdzBx88W4Nl55lj9Q1_3Vkwh8fYUZUp2q1K8YhihfUZE5fj8KHUcUJfCURX5MDxc9tnKWuKnpCQ3KOVn3cw'
+    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJVc2VyIEF1dGhvcml6ZSIsInVzZXJJZCI6IjAxMTExMzAwMDAiLCJvcmdDb2RlIjoiRDAxIiwiaXNzIjoicWl1d2Vud3VAaG9uZ3RlLmluZm8iLCJpYXQiOjE1MjYwMDgzNDEsImV4cCI6MTUyNjAxMDA4MX0.Yo-zEYuSs0qMUtwPBdsigPTz_eIfW7QecbYIQvQFn7QP87wuXjWxB4yItT5DpH3NDKQl504oETGRs4_a80oKzw'
   }
 })
 

@@ -6,9 +6,9 @@ import app from './modules/app'
 
 Vue.use(Vuex)
 const store = new Vuex.Store({
-    state:{},
-    mutations:{},
-    actions:{},
+    state: {},
+    mutations: {},
+    actions: {},
     modules:{
         user,
         app

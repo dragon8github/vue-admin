@@ -1,5 +1,5 @@
 import * as types from '../type'
-import * as utils from '../../utils/jsutil'
+import * as utils from '@utils'
 
 const app = {
     state: {
