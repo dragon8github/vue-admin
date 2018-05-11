@@ -1,22 +1,7 @@
-/**
- * 表格
- */
 .hongte-table {
     margin-top: 20px;
-
-    .cell {
-        display: flex;
-        justify-content: space-around;
-    }
-        
-        .cell > .el-button {
-            margin: 0;
-        }
 }
 
-/**
- * 分页样式
- */
 .hongte-Pagination {
     margin-top: 30px;
 }
@@ -68,6 +53,7 @@
 
         .el-form-item__label {
             width: 120px;
+            max-width: 150px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;

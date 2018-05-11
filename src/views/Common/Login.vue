@@ -45,6 +45,8 @@ export default {
                         "password": this.loginForm.password
                     }).then(result => {
                         this.$message.success('Success!')
+                        this.$cookie.set('token', result.refreshToken, { expires: '10m' });
+                        this.$cookie.set('refreshToken', result.token, { expires: '10m' });
                         this.$router.push({name: "welcome"})
                     }).catch(err => {
                         var msg = err.response.data.result_msg
