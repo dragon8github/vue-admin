@@ -8,7 +8,6 @@ import http from './utils/http.js'
 require('element-ui/lib/theme-chalk/index.css')
 require('font-awesome/css/font-awesome.min.css')
 require('./sass/common.scss')
-require('./sass/hongte.scss')
 
 Vue.use(ElementUI)
 

@@ -1,9 +1,9 @@
 <template>
     <div class="CarLoanManagement">
-        <el-card class="hongte-card" shadow="always">
+        <el-card class="hongte-query-card" shadow="always">
             <!-- 卡片头部 -->
-            <div slot="header" class="card-header clearfix">
-                  <span><i class="fa fa-search"></i> 搜索条件</span>
+            <div slot="header" class="card-header">
+                  <span><i class="fa fa-search"></i> 搜索条件 </span>
                   <el-button-group>
                       <el-button type="primary" icon="el-icon-search">查询</el-button>
                       <el-button type="primary" icon="el-icon-refresh">重置</el-button>
@@ -12,7 +12,7 @@
             </div>
 
             <!-- 典型查询条件表单 -->
-            <el-form :inline="true" :model="formInline" class="hongte-form">
+            <el-form :inline="true" :model="formInline" class="hongte-query-form">
                   <el-form-item label="业务编号："><el-input v-model="formInline.businessNumber" placeholder="业务编号"></el-input></el-form-item>
                   <el-form-item label="客户姓名："><el-input v-model="formInline.customerName" placeholder="客户姓名"></el-input></el-form-item>
                   <el-form-item label="车牌号："><el-input v-model="formInline.licensePlateNumber" placeholder="车牌号"></el-input></el-form-item>
@@ -34,8 +34,8 @@
 
                   <el-form-item label="拖车日期：">
                     <el-date-picker
-                         v-model="value7"
-                         :picker-options="pickerOptions2"
+                         v-model="trailerDate"
+                         :picker-options="pickerOptions"
                          type="daterange"
                          align="right"
                          unlink-panels
@@ -54,7 +54,7 @@
             </el-form>
         </el-card>
 
-        <el-table :data="tableData4" class="hongte-table">
+        <el-table :data="myData" class="hongte-table">
            <el-table-column fixed prop="businessId" label="业务编号" width="220"></el-table-column>
            <el-table-column prop="districtName" label="地区" width="120"> </el-table-column>
            <el-table-column prop="companyName" label="分公司" width="120"> </el-table-column>
@@ -97,13 +97,11 @@
 
         <div class="hongte-Pagination">
              <el-pagination
-                   @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="currentPage"
-                   :page-sizes="[100, 200, 300, 400]"
-                   :page-size="100"
-                   :total="400"
-                   layout="total, sizes, prev, pager, next, jumper">
+                   :page-size="10"
+                   :total="total"
+                   layout="total, prev, pager, next, jumper">
              </el-pagination>
         </div>
 
@@ -126,7 +124,13 @@ export default {
     return {
         dialogFormVisible: false,
         // mock
-        tableData4: [{"businessId":"TDZSXE2016012901002","districtName":"华南片区","companyName":"中山分公司","customerName":"杨长钦","borrowMoney":45000,"repaidAmount":9300,"licensePlateNumber":"粤CGW869","model":"哈弗H6","evaluationAmount":57000,"evaluationDate":"2016-01-29","trailerDate":"2016-11-24","status":"待处置","dragId":"4f74bd96-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDBDXE2016040704001","districtName":"华北片区","companyName":"保定分公司","customerName":"方向明","borrowMoney":40000,"repaidAmount":1500,"licensePlateNumber":"冀F65962","model":"比亚迪G6","evaluationAmount":50000,"evaluationDate":"2016-04-07","trailerDate":"2016-11-24","status":"已转公车","dragId":"4f74a1c6-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDC1012017021401","districtName":"华南片区","companyName":"东莞总部","customerName":"陈文友","borrowMoney":106200,"repaidAmount":0,"licensePlateNumber":"粤B89U32","model":"日产轩逸1.12L 自动经典舒适版","evaluationAmount":0,"evaluationDate":"2017-02-14","trailerDate":"2017-02-15","status":"已转公车","dragId":"4f74a76e-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDC8262017011201","districtName":"四川片区","companyName":"雅安分公司","customerName":"朱洁儿011201","borrowMoney":80000,"repaidAmount":12600.01,"licensePlateNumber":"粤B45688","model":"asdf","evaluationAmount":130000,"evaluationDate":"2017-01-12","trailerDate":"2017-03-01","status":"已转公车","dragId":"4f74ae16-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDDGXE2015111602002","districtName":"华南片区","companyName":"东莞总部","customerName":"肖雪彪","borrowMoney":30000,"repaidAmount":0,"licensePlateNumber":"粤SP602A","model":"江淮瑞风","evaluationAmount":35000,"evaluationDate":"2015-11-16","trailerDate":"2016-11-17","status":"已拍卖","dragId":"4f74b2db-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDYCXE2015112001002","districtName":"华东片区","companyName":"盐城分公司","customerName":"张月芹","borrowMoney":250000,"repaidAmount":30333,"licensePlateNumber":"苏J72J80","model":"路虎神行者2","evaluationAmount":300000,"evaluationDate":"2015-11-20","trailerDate":"2016-10-29","status":"已移交法务","dragId":"4f74b807-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDC5012016110901","districtName":"四川片区","companyName":"成都分公司","customerName":"万青","borrowMoney":2000000,"repaidAmount":1757632.23,"licensePlateNumber":"粤S45125","model":"asdfasdfad","evaluationAmount":3000000,"evaluationDate":"2016-11-09","trailerDate":"2018-05-08","status":"拍卖审核中","dragId":"9eab228e-877c-4a4f-9399-09badfec53b4"},{"businessId":"TDBDXE2015122801002","districtName":"华北片区","companyName":"保定分公司","customerName":"张建","borrowMoney":120000,"repaidAmount":39720,"licensePlateNumber":"冀F18404","model":"奥迪A4","evaluationAmount":153000,"evaluationDate":"2015-12-28","trailerDate":"2017-02-24","status":"待处置","dragId":"4f749d7a-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDC1012016081305","districtName":"华南片区","companyName":"东莞总部","customerName":"发12先0813","borrowMoney":65000,"repaidAmount":0,"licensePlateNumber":"粤S78956","model":"跑车","evaluationAmount":200000,"evaluationDate":"2016-08-13","trailerDate":"2016-11-17","status":"已转公车","dragId":"4f74a587-3ef2-11e8-b4f8-0242ac110003"},{"businessId":"TDC4012016112402","districtName":"华北片区","companyName":"北京分公司","customerName":"不留名","borrowMoney":100000,"repaidAmount":0,"licensePlateNumber":"京A12345","model":"CRV","evaluationAmount":10000,"evaluationDate":"2016-11-24","trailerDate":"2016-11-25","status":"已转公车","dragId":"4f74ac2d-3ef2-11e8-b4f8-0242ac110003"}],
+        myData: [],
+        // 当前分页
+        currentPage: 1,
+        // 分页总数
+        total: 0,
+        // 拖车日期
+        trailerDate: '',
         // where
         formInline: {
             user: '',
@@ -139,9 +143,7 @@ export default {
             branchOffice: '',
             state: '',
         },
-        value7: '',
-        currentPage: 1,
-        pickerOptions2: {
+        pickerOptions: {
           shortcuts: [{
             text: '最近一周',
             onClick(picker) {
@@ -171,95 +173,38 @@ export default {
     }
   },
   methods: {
-    handleEdit () {
-        console.log(arguments)
+    getData (page) {
+        this.$http.get('/alms/core/car/carList', {
+            params:{
+              "page": page,
+              "limit": "10"
+            }
+        }).then(result => {
+            if (result.code == 0) {
+              this.myData = result.data
+              this.total = result.count
+            } else {
+              this.$message.error('接口异常：' + result.msg);
+            }
+        }).catch(err => {
+            this.$message.error('接口异常：' + err.message);
+        })
     },
-
-    handleDelete () {
-        console.log(arguments)
+    handleCurrentChange (page) {
+        this.getData(page)
     },
-
-    handleDetails () {
-        console.log(arguments)
-    },
-
-    handleSizeChange () {
-
-    },
-
-    handleCurrentChange () {
-
-    },
-
     handleCommand () {
         console.log(arguments);
         this.dialogFormVisible = true
     }
+  },
+  beforeMount () {
+      this.getData(1)
   }
 }
 </script>
 
 <style lang="scss">
 
-.hongte-table {
-    margin-top: 20px;
-}
 
-.hongte-Pagination {
-    margin-top: 30px;
-}
-
-/**
- * 美化card头部的样式
- */
-.hongte-card {
-    .card-header {
-       display: flex;
-       justify-content: space-between;
-       align-items: center;
-    }
-
-        .el-card__header {
-            padding: 10px 20px;
-        }
-
-        .el-card__body {
-            padding-bottom: 10px;
-        }
-}
-
-/**
- * 鸿特典型的查询条件表单
- */
-.hongte-form {
-    display: flex;
-    flex-wrap: wrap;
-
-    .el-form-item {
-        display: flex;
-        margin-right: 0px;
-        padding-right: 30px;
-        width: 25%;
-    }
-
-        .el-form-item__label {
-            flex: 1;
-        }
-
-        .el-form-item__content {
-            flex: 3;
-        }
-
-        .el-select {
-            width: 100%;
-        }
-
-        .el-date-editor .el-range-separator {
-            width: 20px;
-        }
-
-        .el-range-editor.el-input__inner {
-            width: 100%;
-        }
-}
 </style>
