@@ -26,14 +26,6 @@ const http = axios.create({
 })
 
 /**
- * 清空cookie
- */
-const clearToken = () => {
-    Vue.cookie.delete('token');
-    Vue.cookie.delete('refreshToken');
-}
-
-/**
  * 获取 refreshToken
  */
 const getRefreshToken = () => {
@@ -45,8 +37,6 @@ const getRefreshToken = () => {
         Vue.cookie.set('refreshToken', refreshToken, { expires: '30m' });      
     // 否则跳转登录
     } else {
-        // 清空cookie
-        clearToken()
         // 跳转到登录页
         router.push('/login')
         // 取消请求
@@ -75,8 +65,6 @@ const getToken = (refreshToken) => {
                 throw new Error(data.result_msg)
             }
         }).catch(err => {
-            // 清空cookie
-            clearToken()
             // 跳转到登录页
             router.push('/login')
             // 取消请求
@@ -116,9 +104,9 @@ http.interceptors.request.use(async request => {
  * 响应拦截
  */
 http.interceptors.response.use(response => {
-    return response.data
+  return response.data
 }, err => {
-    return Promise.reject(err)
+  return Promise.reject(err)
 })
 
 export default http
