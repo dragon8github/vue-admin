@@ -19,34 +19,69 @@ const http = axios.create({
   timeout: 1000 * 10,
   baseURL: process.env.NODE_ENV === 'production' ? UAT : DEV,
   headers: {
-    'app': 'ALMS',
-    'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/json; charset=utf-8',
+      'app': 'ALMS',
+      'X-Requested-With': 'XMLHttpRequest',
+      'Content-Type': 'application/json; charset=utf-8',
   }
 })
 
 /**
  * 请求拦截
  */
-http.interceptors.request.use(request => {
-  // 每次请求，我都去刷新一下cookie（稍后封装一下）
-  if (Vue.cookie.get('refreshToken') && request.url.indexOf('/uaa/auth/login') < 0) { 
-      Vue.cookie.set('token', Vue.cookie.get('token'), { expires: '28m' });
-      Vue.cookie.set('refreshToken', Vue.cookie.get('refreshToken'), { expires: '30m' });
-  } else {
-      this.$message.error('登录超时，请重新登录。');
-      return router.push('/login')
-  }
+http.interceptors.request.use(async request => {
+    if ((['/uaa/auth/login', '/uaa/auth/token']).indexOf(request.url) < 0) {
+        // 从cookie中获取refreshToken
+        var refreshToken = Vue.cookie.get('refreshToken')
+        // 从cookie中获取token
+        var token = Vue.cookie.get('token')
 
-  /**
-   * 请不要尝试将此 request.headers['Authorization'] 的header设置移动到上面的【axios.create】公共配置中去。因为这会导致 Vue.cookie 不存在的错误。
-   * 原因是在 main.js 中 import 总是提前执行（无论 import 放在什么位置），也就是说 【import http from './utils/http.js'】 总是比 【Vue.use(VueCookie)】执行的快。
-   * 而又因为import的时候会执行【axios.create】中的代码块，这时候Vue.cookie还未被初始化，估无法会出现Vue.cookie对象不存在的错误。
-   * 除非你将 【import http from './utils/http.js'】 改为 【var http = require('./utils/http.js').default】
-   * 但这样未免太不优雅。所以我的解决方案是延迟执行（懒执行），在请求的时候才执行【Vue.cookie.get('token')】，那时候早就执行Vue.use(VueCookie)了。
-   */
-  request.headers['Authorization'] = 'Bearer ' + Vue.cookie.get('token') || ''
-  return request
+        // 如果refreshToken失效则重新登录，否则重置一下过期时间
+        if (refreshToken) {
+            // 重置为30分钟
+            Vue.cookie.set('refreshToken', refreshToken, { expires: '30m' });      
+        // 否则跳转登录
+        } else {
+            // 跳转到登录页
+            router.push('/login')
+            // 取消请求（我还不如直接throw呢）
+            throw new Error('登录超时，请重新登录。')
+        }
+
+        // 如果token失效，则重新获取
+        if (!token || token === 'undefined') {
+            // 重新请求获取最新的 token
+            token = await http.get('/uaa/auth/token', {
+                headers: {
+                  // 注意这里是将 Authorization 设置为 refreshToken
+                  Authorization: 'Bearer ' + refreshToken
+                }
+            }).then(data => {
+                console.log("获取到的最新token", data);
+                if (data.token) {
+                    // 重置token
+                    Vue.cookie.set('token', data.token, { expires: '28m' });
+                    // 返回一下token
+                    return data.token
+                  } else {
+                      // 跳转到登录页
+                      router.push('/login')
+                      // 取消请求
+                      throw new Error(data.result_msg)
+                  }
+            }).catch(err => {
+                // 跳转到登录页
+                router.push('/login')
+                // 取消请求
+                throw new Error('重新获取token失败，请重新登录。' + err.message)
+            })
+        }
+
+        // 所有请求都要带上授权码        
+        request.headers['Authorization'] = 'Bearer ' + token
+    }
+    
+    // 一切正常，照常请求
+    return request
 }, err => {
   return Promise.reject(err)
 })
