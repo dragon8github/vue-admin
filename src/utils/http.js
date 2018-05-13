@@ -26,12 +26,12 @@ const http = axios.create({
 })
 
 /**
- * 获取并更新 refreshToken
+ * 获取 refreshToken
  */
 const getRefreshToken = () => {
     // 从cookie中获取refreshToken
     var refreshToken = Vue.cookie.get('refreshToken')    
-    // 如果refreshToken失效则重新登录，否则重置一下过期时间
+    // 如果 refreshToken 正常则重置一下过期时间
     if (refreshToken) {
         // 重置为30分钟
         Vue.cookie.set('refreshToken', refreshToken, { expires: '30m' });      
@@ -39,7 +39,7 @@ const getRefreshToken = () => {
     } else {
         // 跳转到登录页
         router.push('/login')
-        // 取消请求（我还不如直接throw呢）
+        // 取消请求
         throw new Error('登录超时，请重新登录。')
     }
     return refreshToken;
@@ -54,14 +54,14 @@ const getToken = (refreshToken) => {
     // 如果token失效，则重新获取
     if (!token || token == 'undefined' || token == 'null') {
         return http.get('/uaa/auth/token').then(data => {
-            // 如果有token，说明获取成功
+            // 获取成功
             if (data.token) {
                 // 重置token
                 Vue.cookie.set('token', data.token, { expires: '28m' });
                 // 返回token
                 return data.token
             } else {
-                // 取消请求
+                // 获取失败
                 throw new Error(data.result_msg)
             }
         }).catch(err => {
@@ -75,7 +75,6 @@ const getToken = (refreshToken) => {
     }
 }
 
-
 /**
  * 请求拦截
  */
@@ -84,7 +83,7 @@ http.interceptors.request.use(async request => {
     if ('/uaa/auth/login' === request.url) {
         return request
 
-    // 如果是重新获取token，Authorization需要设置为refreshToken
+    // 如果是重新获取token，则Authorization需要设置为refreshToken
     } else if ('/uaa/auth/token' === request.url) {
         var refreshToken = getRefreshToken();
         request.headers['Authorization'] = 'Bearer ' + refreshToken
