@@ -26,7 +26,7 @@ const http = axios.create({
 })
 
 /**
- * 清空 cookie
+ * 清空cookie
  */
 const clearToken = () => {
     Vue.cookie.delete('token');
@@ -42,7 +42,7 @@ const getRefreshToken = () => {
     // 如果 refreshToken 正常则重置一下过期时间
     if (refreshToken) {
         // 重置为30分钟
-        Vue.cookie.set('refreshToken', refreshToken, { expires: '30m' });
+        Vue.cookie.set('refreshToken', refreshToken, { expires: '30m' });      
     // 否则跳转登录
     } else {
         // 清空cookie

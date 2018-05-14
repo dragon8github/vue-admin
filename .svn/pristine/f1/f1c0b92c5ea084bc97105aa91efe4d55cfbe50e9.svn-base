@@ -59,11 +59,11 @@
            <el-table-column fixed prop='businessId' label='业务编号' width='220'></el-table-column>
            <el-table-column prop='districtName' label='地区' width='120'> </el-table-column>
            <el-table-column prop='companyName' label='分公司' width='120'> </el-table-column>
-           <el-table-column prop='customerName' label='客户名称' width='150'> </el-table-column>
+           <el-table-column prop='customerName' label='客户名称' width='120'> </el-table-column>
            <el-table-column prop='borrowMoney' label='借款金额' width='120'> </el-table-column>
            <el-table-column prop='repaidAmount' label='已还金额' width='120'> </el-table-column>
            <el-table-column prop='licensePlateNumber' label='车牌号' width='120'> </el-table-column>
-           <el-table-column prop='model' label='车辆型号' width='250'> </el-table-column>
+           <el-table-column prop='model' label='车辆型号' width='120'> </el-table-column>
            <el-table-column prop='evaluationAmount' label='评估价' width='120'> </el-table-column>
            <el-table-column prop='evaluationDate' label='评估日期' width='120'> </el-table-column>
            <el-table-column prop='trailerDate' label='拖车日期' width='120'> </el-table-column>
@@ -109,9 +109,9 @@
         <el-dialog class="hongte-dialog" :visible.sync='dialogFormVisible' title='发起拍卖' >
             <iframe class='honte-iframe' src='/#/auctionApplication'></iframe>
         </el-dialog>
-    <!--     <el-dialog class="hongte-dialog" :visible.sync='dialogFormVisible' title='上传附件' >
+        <el-dialog class="hongte-dialog" :visible.sync='dialogFormVisible' title='上传附件' >
             <iframe class='honte-iframe' src='/#/UploadFile'></iframe>
-        </el-dialog> -->
+        </el-dialog>
     </div>
 </template>
 
@@ -162,11 +162,10 @@ export default {
       // 获取数据
       getData (page = 1) {
           this.loading = true
-          // axios
           this.$http.get('/alms/core/car/carList', {
               params: Object.assign({}, {
                 'page': page,
-                'limit': 10
+                'limit': '10'
               }, this.where)
           }).then(result => {
               this.loading = false
@@ -174,10 +173,10 @@ export default {
                 this.total = result.count
                 this.myData = result.data
               } else {
-                this.$message.error(result.msg);
+                this.$message.error('接口异常：' + result.msg);
               }
           }).catch(err => {
-              this.$message.error(err.message);
+              this.$message.error('接口异常：' + err.message);
           })
       },
       // 翻页

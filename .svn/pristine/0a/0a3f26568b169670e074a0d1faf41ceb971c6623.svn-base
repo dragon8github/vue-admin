@@ -26,8 +26,7 @@ const router = new Router({
         // 车易贷管理
         {path: 'carLoanManagement', meta: {title: '车易贷管理'}, name: 'carLoanManagement',component: () => import('@/views/AssetManagement/carLoanManagement')},
     ]},
-
-    // 好纠结这东西到底要放在哪……
+    // 考虑作为它的children，这样就舒服多了。只需要弹出->跳转->修改title
     {path: '/auctionApplication', name: 'auctionApplication', meta: {title: '拍卖申请'}, component: () => import('@/views/AssetManagement/auctionApplication')},
     {path: '/UploadFile', name: 'UploadFile', meta: {title: '上传附件'}, component: () => import('@/main-components/UploadFile')},
   ]
