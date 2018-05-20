@@ -56,8 +56,8 @@ body {
  * 滚动条修饰
  */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track,
@@ -97,13 +97,9 @@ body {
  * 饿了么替换补丁
  */
 .el-main {
-  padding: 0;
+  padding: 0
 }
 
-
-.el-table{
-  margin-top:10px;
-}
 .el-tabs__header {
   margin: 0;
 }

@@ -118,8 +118,7 @@ export default {
     height: 100vh;
 
     .logo {
-        // background-color: #17B3A3;
-        background-color: #409eff;
+        background-color: #17B3A3;
         text-align: center;
         font-size: 18px;
         color: #ffffff;
